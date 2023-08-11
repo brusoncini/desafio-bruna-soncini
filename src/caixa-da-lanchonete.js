@@ -1,5 +1,6 @@
 class CaixaDaLanchonete {
   calcularValorDaCompra(metodoDePagamento, itens) {
+
     // cardapio
     const cardapio = [
       {
@@ -57,50 +58,57 @@ class CaixaDaLanchonete {
       const [produto, quantidade] = item.split(",");
 
       // verifica se o item é valido
-      let produtoEncontrado = cardapio.find((produto) => {
-        return cardapio.item === produto;
+      const produtoEncontrado = cardapio.find((produtoInfo) => {
+        return produtoInfo.item === produto;
       });
 
       if (!produtoEncontrado) {
         return "Item inválido!";
       }
 
-      // valor total dos itens
+      // item extra sem item principal
+      if (produtoEncontrado.itemExtra === true) {
 
-      valorTotal = produto * quantidade;
+        if (!itens.includes('cafe'))
+        return "Item extra não pode ser pedido sem o principal";
+
+        if (!itens.includes('sanduiche'))
+        return "Item extra não pode ser pedido sem o principal";
+      }
+
+      // valor total dos itens
+      valorTotal += produtoEncontrado.valor * quantidade;
     }
 
     // verifica se o pagamento é valido
-    if (
-      metodoDePagamento !== "dinheiro" &&
-      metodoDePagamento !== "credito" &&
-      metodoDePagamento !== "debito"
-    ) {
-      return "Forma de pagamento inválida!";
-    }
+     const pagamentosAceitos = ["dinheiro", "credito", "debito"]
+
+     const pagamentoEncontrado = pagamentosAceitos.find((pagamento) => {
+        return metodoDePagamento === pagamento;
+      });
+
+      if (!pagamentoEncontrado) {
+        return "Forma de pagamento inválida!";
+      }
 
     // descontos e taxas
     if (metodoDePagamento === "dinheiro") {
-      valorTotal = valorTotal - valorTotal * 0.05;
+      valorTotal -= valorTotal * 0.05;
     } else if (metodoDePagamento === "credito") {
-      valorTotal = valorTotal + valorTotal * 0.03;
-    }
-
-    // "Item extra não pode ser pedido sem o principal".
-    if (cardapio.itemExtra === true) {
+      valorTotal += valorTotal * 0.03;
     }
 
     // Se não forem pedidos itens
-    if (itens === 0) {
-      return "Quantidade inválida!";
-    }
-
-    // Se a quantidade de itens for zero
     if (itens.length === 0) {
       return "Não há itens no carrinho de compra!";
     }
 
-    return `R$ ${valorTotal.toFixed(2)}`;
+    // Se o valor da compra for 0
+    if (valorTotal === 0) {
+        return "Quantidade inválida!";
+      }
+
+    return `R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
   }
 }
 
