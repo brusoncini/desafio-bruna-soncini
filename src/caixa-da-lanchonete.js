@@ -1,53 +1,44 @@
 class CaixaDaLanchonete {
   calcularValorDaCompra(metodoDePagamento, itens) {
-
     // cardapio
     const cardapio = [
       {
         item: "cafe",
         valor: 3.0,
-        itemExtra: false,
       },
 
       {
         item: "chantily",
         valor: 1.5,
-        itemExtra: true,
       },
       {
         item: "suco",
-        itemExtra: false,
         valor: 6.2,
       },
 
       {
         item: "sanduiche",
         valor: 6.5,
-        itemExtra: false,
       },
 
       {
         item: "queijo",
         valor: 2.0,
-        itemExtra: true,
       },
 
       {
         item: "salgado",
         valor: 7.25,
-        itemExtra: false,
       },
 
       {
         item: "combo1",
         valor: 9.5,
-        itemExtra: false,
       },
 
       {
         item: "combo2",
         valor: 7.5,
-        itemExtra: false,
       },
     ];
 
@@ -67,13 +58,16 @@ class CaixaDaLanchonete {
       }
 
       // item extra sem item principal
-      if (produtoEncontrado.itemExtra === true) {
+      if (item === "chantily") {
+        if (!itens.includes("cafe")) {
+          return "Item extra não pode ser pedido sem o principal";
+        }
+      }
 
-        if (!itens.includes('cafe'))
-        return "Item extra não pode ser pedido sem o principal";
-
-        if (!itens.includes('sanduiche'))
-        return "Item extra não pode ser pedido sem o principal";
+      if (item === "queijo") {
+        if (!itens.includes("cafe")) {
+          return "Item extra não pode ser pedido sem o principal";
+        }
       }
 
       // valor total dos itens
@@ -81,15 +75,15 @@ class CaixaDaLanchonete {
     }
 
     // verifica se o pagamento é valido
-     const pagamentosAceitos = ["dinheiro", "credito", "debito"]
+    const pagamentosAceitos = ["dinheiro", "credito", "debito"];
 
-     const pagamentoEncontrado = pagamentosAceitos.find((pagamento) => {
-        return metodoDePagamento === pagamento;
-      });
+    const pagamentoEncontrado = pagamentosAceitos.find((pagamento) => {
+      return metodoDePagamento === pagamento;
+    });
 
-      if (!pagamentoEncontrado) {
-        return "Forma de pagamento inválida!";
-      }
+    if (!pagamentoEncontrado) {
+      return "Forma de pagamento inválida!";
+    }
 
     // descontos e taxas
     if (metodoDePagamento === "dinheiro") {
@@ -105,10 +99,10 @@ class CaixaDaLanchonete {
 
     // Se o valor da compra for 0
     if (valorTotal === 0) {
-        return "Quantidade inválida!";
-      }
+      return "Quantidade inválida!";
+    }
 
-    return `R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
+    return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
   }
 }
 
