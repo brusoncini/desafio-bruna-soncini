@@ -32,10 +32,10 @@ class CaixaDaLanchonete {
 
       if (produto !== "chantily" && produto !== "queijo") {
         itensPrincipais[produto] =
-          (itensPrincipais[produto] || 0) + (quantidade);
+          (itensPrincipais[produto] || 0) + quantidade;
       } else {
         itensExtras[produto] =
-          (itensExtras[produto] || 0) + (quantidade);
+          (itensExtras[produto] || 0) + quantidade;
       }
 
       if (
@@ -76,10 +76,6 @@ class CaixaDaLanchonete {
     // Se o valor da compra for 0
     if (valorTotal == 0) {
       return "Quantidade inválida!";
-    }
-
-    // item extra sem item principal
-    for (const produto in itensExtras) {
     }
 
     return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
