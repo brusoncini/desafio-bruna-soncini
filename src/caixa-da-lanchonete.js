@@ -2,47 +2,20 @@ class CaixaDaLanchonete {
   calcularValorDaCompra(metodoDePagamento, itens) {
     // cardapio
     const cardapio = [
-      {
-        item: "cafe",
-        valor: 3.0,
-      },
-
-      {
-        item: "chantily",
-        valor: 1.5,
-      },
-      {
-        item: "suco",
-        valor: 6.2,
-      },
-
-      {
-        item: "sanduiche",
-        valor: 6.5,
-      },
-
-      {
-        item: "queijo",
-        valor: 2.0,
-      },
-
-      {
-        item: "salgado",
-        valor: 7.25,
-      },
-
-      {
-        item: "combo1",
-        valor: 9.5,
-      },
-
-      {
-        item: "combo2",
-        valor: 7.5,
-      },
+      { item: "cafe", valor: 3.0 },
+      { item: "chantily", valor: 1.5 },
+      { item: "suco", valor: 6.2 },
+      { item: "sanduiche", valor: 6.5 },
+      { item: "queijo", valor: 2.0 },
+      { item: "salgado", valor: 7.25 },
+      { item: "combo1", valor: 9.5 },
+      { item: "combo2", valor: 7.5 },
     ];
 
     let valorTotal = 0;
+
+    const itensPrincipais = {};
+    const itensExtras = {};
 
     // trata a entrada
     for (let item of itens) {
@@ -57,17 +30,20 @@ class CaixaDaLanchonete {
         return "Item inválido!";
       }
 
-      // item extra sem item principal
-      if (item === "chantily") {
-        if (!itens.includes("cafe")) {
-          return "Item extra não pode ser pedido sem o principal";
-        }
+      if (produto !== "chantily" && produto !== "queijo") {
+        itensPrincipais[produto] =
+          (itensPrincipais[produto] || 0) + (quantidade);
+      } else {
+        itensExtras[produto] =
+          (itensExtras[produto] || 0) + (quantidade);
       }
 
-      if (item === "queijo") {
-        if (!itens.includes("cafe")) {
-          return "Item extra não pode ser pedido sem o principal";
-        }
+      if (
+        !itensPrincipais[
+          produto.replace("chantily", "cafe").replace("queijo", "sanduiche")
+        ]
+      ) {
+        return "Item extra não pode ser pedido sem o principal";
       }
 
       // valor total dos itens
@@ -98,8 +74,12 @@ class CaixaDaLanchonete {
     }
 
     // Se o valor da compra for 0
-    if (valorTotal === 0) {
+    if (valorTotal == 0) {
       return "Quantidade inválida!";
+    }
+
+    // item extra sem item principal
+    for (const produto in itensExtras) {
     }
 
     return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
