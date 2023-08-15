@@ -30,6 +30,7 @@ class CaixaDaLanchonete {
         return "Item inválido!";
       }
 
+      // itens extras e principais
       if (produto !== "chantily" && produto !== "queijo") {
         itensPrincipais[produto] =
           (itensPrincipais[produto] || 0) + quantidade;
@@ -53,11 +54,7 @@ class CaixaDaLanchonete {
     // verifica se o pagamento é valido
     const pagamentosAceitos = ["dinheiro", "credito", "debito"];
 
-    const pagamentoEncontrado = pagamentosAceitos.find((pagamento) => {
-      return metodoDePagamento === pagamento;
-    });
-
-    if (!pagamentoEncontrado) {
+    if (!pagamentosAceitos.includes(metodoDePagamento)) {
       return "Forma de pagamento inválida!";
     }
 
